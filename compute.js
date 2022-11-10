@@ -1,8 +1,9 @@
 let a = 6, b = 4, c = 2, d = 1;
 let arr = [8, 5, 8, 6]
+let answers = []
 
-let val = findRes(arr)
-console.log("val:", val);
+findRes(arr)
+console.log("answers:", answers);
 
 function findRes(arr = [], exp = '') {
 
@@ -22,15 +23,13 @@ function findRes(arr = [], exp = '') {
                     item.text = exp + item.exp
                     item.children = item.children.concat(findRes([item.value, ...arrInner], (item.text + ",")))
                 } else {
-                    // console.log(item.value);
                     item.text = exp + item.exp
                     if(item.value === 24) {
-                        result.push(item)
-                        console.log(result)
+                        answers.push(item)
                     }
                 }
             })
-            // result.push(res)
+            result.push(res)
         }
     }
     return result
