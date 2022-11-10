@@ -1,58 +1,68 @@
-
 let a = 6, b = 4, c = 2, d = 1;
-let arr = [6,4,2,1]
+let arr = [8, 5, 8, 6]
 
-findRes(arr)
+let val = findRes(arr)
+console.log("val:", val);
 
-function findRes(arr) {
-    let arrInner = [...arr]
+function findRes(arr = [], exp = '') {
+
     let result = []
-    for (let i = 0; i < arr.length-1; i++) {
+    for (let i = 0; i < arr.length - 1; i++) {
+
         let res = []
-        arrInner.splice(i,1)
-        for (let j = i+1; j < arr.length; j++) {
-            arrInner.splice(j,1)
-            res = cpt(arr[i],arr[j])
-            if(arrInner.length){
-            res.forEach(item=> {
-                // item.children = item.children.concat(findRes([item.value,...arrInner]))
-                item.children.forEach(list=> list.children = list.children.concat(cpt(list.value,b)))
+        for (let j = i + 1; j < arr.length; j++) {
+            let arrInner = [...arr]
+            res = cpt(arr[i], arr[j])
+            let num = arr[j]
+            arrInner.splice(i, 1)
+            let index = arrInner.findIndex(item => item === arr[j])
+            if (index >= 0) arrInner.splice(index, 1)
+            res.forEach(item => {
+                if (arrInner.length) {
+                    item.text = exp + item.exp
+                    item.children = item.children.concat(findRes([item.value, ...arrInner], (item.text + ",")))
+                } else {
+                    // console.log(item.value);
+                    item.text = exp + item.exp
+                    if(item.value === 24) {
+                        result.push(item)
+                        console.log(result)
+                    }
+                }
             })
-            }
-            result.push(res)
+            // result.push(res)
         }
     }
-    console.log( result );
     return result
 }
 
 
-function cpt(a,b) {
+function cpt(a, b) {
     return [
         {
             exp: `${a}+${b}`,
-            value: a+b,
+            value: a + b,
             children: []
         },
         {
             exp: `${a}-${b}`,
-            value: a-b,
+            value: a - b,
             children: []
-        },{
+        }, {
             exp: `${a}*${b}`,
-            value: a*b,
+            value: a * b,
             children: []
-        },{
+        }, {
             exp: `${a}/${b}`,
-            value: a/b,
+            value: a / b,
             children: []
-        },{
+        }, {
             exp: `${b}-${a}`,
-            value: b-a,
+            value: b - a,
             children: []
-        },{
+        }, {
             exp: `${b}/${a}`,
-            value: b/a,
+            value: b / a,
             children: []
         }
     ]
