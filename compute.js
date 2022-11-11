@@ -1,5 +1,5 @@
 let a = 6, b = 4, c = 2, d = 1;
-let arr = [8, 5, 8, 6]
+let arr = [1, 1, 4, 3]
 let answers = []
 
 findRes(arr)
