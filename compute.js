@@ -59,28 +59,28 @@ function findRes(arr = [], exp = '') {
 function cpt(a, b) {
     return [
         {
-            exp: `${a}+${b}`,
+            exp: `${a}+${b}=${a+b}`,
             value: a + b,
             children: []
         },
         {
-            exp: `${a}-${b}`,
+            exp: `${a}-${b}=${a-b}`,
             value: a - b,
             children: []
         }, {
-            exp: `${a}*${b}`,
+            exp: `${a}*${b}=${a*b}`,
             value: a * b,
             children: []
         }, {
-            exp: `${a}/${b}`,
+            exp: `${a}/${b}=${a/b}`,
             value: a / b,
             children: []
         }, {
-            exp: `${b}-${a}`,
+            exp: `${b}-${a}=${b-a}`,
             value: b - a,
             children: []
         }, {
-            exp: `${b}/${a}`,
+            exp: `${b}/${a}=${b/a}`,
             value: b / a,
             children: []
         }
@@ -106,6 +106,7 @@ function createNum(num = 4) {
     div.innerHTML = arr.map(item => `<li>${item}</li>`).join('')
     // 调用寻找解题答案的函数
     findRes(arr)
+    lisClick()
 }
 // 验证答案是否正确 
 function checkAnswer(str) {
@@ -114,8 +115,11 @@ function checkAnswer(str) {
     // 查询是否有此答案
     let res = answers.find(item => item.text.includes(str))
     // 判定最终结果
-    if (res) { console.log("恭喜您，答对了：", res) }
+    if (res) { console.log("恭喜您，答对了：", res);
+    document.querySelector("#answer-text").innerText = res.text
+ }
     else { console.log("对不起，你错了：", answers[0].text) }
+    createNum()
 }
 // 获取所有的按钮对象
 let btns = document.querySelectorAll("button");
@@ -125,6 +129,7 @@ btns[0].addEventListener("click", function () {
 })
 // 确定按钮函数  答题
 btns[1].addEventListener("click", function () {
+    console.log(expression);
     // 若表达式不完整，不允许答题
     if (expression.length < 3) return
     // 将数组拼接成表达式
@@ -132,7 +137,9 @@ btns[1].addEventListener("click", function () {
     // 调用验证答案的函数，并传入拼接的表达式
     checkAnswer(str)
 })
-// 获取所有的 li 对象
+
+function lisClick(params) {
+    // 获取所有的 li 对象
 let lis = document.querySelectorAll("li");
 // 各个 li 对象的点击函数
 for (let i = 0; i < lis.length; i++) {
@@ -146,5 +153,8 @@ for (let i = 0; i < lis.length; i++) {
             expression.push(this.innerText)
         }
     }
+}
+
+    
 }
 
