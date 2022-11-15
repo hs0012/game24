@@ -7,6 +7,12 @@ let expression = []
 
 createNum()
 
+// let p = new Proxy(expression,{
+//     get(){
+//         console.log("变化了");
+//     }
+// })
+
 // 寻找可计算出 24 的方法
 function findRes(arr = [], exp = '') {
     // 声明一个变量数组，用来接收传入的数组的每两项做计算后的所有可能结果
@@ -59,28 +65,28 @@ function findRes(arr = [], exp = '') {
 function cpt(a, b) {
     return [
         {
-            exp: `${a}+${b}=${a+b}`,
+            exp: `${a}+${b}=${a + b}`,
             value: a + b,
             children: []
         },
         {
-            exp: `${a}-${b}=${a-b}`,
+            exp: `${a}-${b}=${a - b}`,
             value: a - b,
             children: []
         }, {
-            exp: `${a}*${b}=${a*b}`,
+            exp: `${a}*${b}=${a * b}`,
             value: a * b,
             children: []
         }, {
-            exp: `${a}/${b}=${a/b}`,
+            exp: `${a}/${b}=${a / b}`,
             value: a / b,
             children: []
         }, {
-            exp: `${b}-${a}=${b-a}`,
+            exp: `${b}-${a}=${b - a}`,
             value: b - a,
             children: []
         }, {
-            exp: `${b}/${a}=${b/a}`,
+            exp: `${b}/${a}=${b / a}`,
             value: b / a,
             children: []
         }
@@ -92,6 +98,9 @@ function createNum(num = 4) {
     // 清空数字列表和答案列表两个数组
     arr = []
     answers = []
+    expression = []
+    document.querySelector('#answer-text').innerHTML = ""
+    document.querySelector("#take-text").innerText = ''
     // 开始生成随机数
     for (let index = 0; index < num; index++) {
         // 生成一个随机整数
@@ -115,11 +124,16 @@ function checkAnswer(str) {
     // 查询是否有此答案
     let res = answers.find(item => item.text.includes(str))
     // 判定最终结果
-    if (res) { console.log("恭喜您，答对了：", res);
-    document.querySelector("#answer-text").innerText = res.text
- }
-    else { console.log("对不起，你错了：", answers[0].text) }
-    createNum()
+    if (res) {
+        alert("恭喜您，答对了!");
+        document.querySelector("#answer-text").innerText = res.text
+    }
+    else {
+        alert("对不起，你错了!")
+        document.querySelector("#answer-text").innerText = answers[0].text
+    }
+    setTimeout(() => createNum(), 3000);
+
 }
 // 获取所有的按钮对象
 let btns = document.querySelectorAll("button");
@@ -137,24 +151,40 @@ btns[1].addEventListener("click", function () {
     // 调用验证答案的函数，并传入拼接的表达式
     checkAnswer(str)
 })
+// 无解按钮  无解
+btns[2].addEventListener("click", () => {
+    console.log(expression, answers);
+    if (expression.length === 0 && answers.length === 0) {
+        alert("恭喜您，答对了！！！")
+    } else {
+        alert("回答错误！！！1")
+    }
+    setTimeout(() => createNum(), 3000);
+
+})
+
+
 
 function lisClick(params) {
     // 获取所有的 li 对象
-let lis = document.querySelectorAll("li");
-// 各个 li 对象的点击函数
-for (let i = 0; i < lis.length; i++) {
-    lis[i].onclick = function () {
-        // 若表达式数组完成，可继续添加项进入数组中
-        if (expression.length < 3) {
-            expression.push(this.innerText)
-        } else {
-            // 若 expression 已完整后，需要清空再重新加入 表达式各项
-            expression = [];
-            expression.push(this.innerText)
+    let lis = document.querySelectorAll("li");
+    // 获取作答区对象
+    let takeText = document.querySelector("#take-text")
+    // 各个 li 对象的点击函数
+    for (let i = 0; i < lis.length; i++) {
+        lis[i].onclick = function () {
+            // 若表达式数组完成，可继续添加项进入数组中
+            if (expression.length < 3) {
+                expression.push(this.innerText)
+            } else {
+                // 若 expression 已完整后，需要清空再重新加入 表达式各项
+                expression = [];
+                expression.push(this.innerText)
+            }
+            takeText.innerText = expression.join('')
         }
     }
 }
 
-    
-}
+
 
