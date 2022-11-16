@@ -4,14 +4,48 @@ let arr = []
 let answers = []
 // 用户算式值
 let expression = []
+// 答案展示区 对象
+let answerText = document.querySelector('#answer-text')
+// 用户作答 展示区对象
+let takeText = document.querySelector("#take-text")
 
+// 获取 不会、确定、无解 按钮对象
+let btns = document.querySelectorAll(".btn-box button");
+
+// 不会 按钮功能
+btns[0].addEventListener("click", function () {
+    if (answers.length) {
+        answerText.innerText = answers[0].text
+        setTimeout(() => createNum(), 5000);
+    }
+    else {
+        alert("此题无解！！！！")
+        createNum()
+    }
+})
+// 确定按钮函数  答题
+btns[1].addEventListener("click", function () {
+    console.log(expression);
+    // 若表达式不完整，不允许答题
+    if (expression.length < 3) return alert("请正确答题！！！")
+    // 将数组拼接成表达式
+    let str = expression.join("")
+    // 调用验证答案的函数，并传入拼接的表达式
+    checkAnswer(str)
+})
+// 无解按钮  无解
+btns[2].addEventListener("click", () => {
+    if (answers.length === 0 && expression.length < 3) {
+        alert("恭喜您，答对了！！！")
+    } else {
+        alert("回答错误！！！1")
+        answerText.innerText = answers[0].text
+        console.log(answers);
+    }
+    setTimeout(() => createNum(), 3000);
+})
+// 游戏初始化
 createNum()
-
-// let p = new Proxy(expression,{
-//     get(){
-//         console.log("变化了");
-//     }
-// })
 
 // 寻找可计算出 24 的方法
 function findRes(arr = [], exp = '') {
@@ -99,8 +133,9 @@ function createNum(num = 4) {
     arr = []
     answers = []
     expression = []
-    document.querySelector('#answer-text').innerHTML = ""
-    document.querySelector("#take-text").innerText = ''
+    answerText.innerText = "";
+    takeText.innerText = ""
+    // btnList.forEach(item=>item.disabled = true)
     // 开始生成随机数
     for (let index = 0; index < num; index++) {
         // 生成一个随机整数
@@ -112,7 +147,9 @@ function createNum(num = 4) {
     }
     // 将生成的数字集合逐一放入 HTML 中
     let div = document.querySelector('.container');
-    div.innerHTML = arr.map(item => `<li>${item}</li>`).join('')
+    div.innerHTML = arr.map(item => `<button>${item}</button>`).join('')
+    let btnList = document.querySelectorAll(".container button");
+    btnList.forEach(item=>item.disabled = false)
     // 调用寻找解题答案的函数
     findRes(arr)
     lisClick()
@@ -126,54 +163,25 @@ function checkAnswer(str) {
     // 判定最终结果
     if (res) {
         alert("恭喜您，答对了!");
-        document.querySelector("#answer-text").innerText = res.text
+        answerText.innerText = res.text
     }
     else {
         alert("对不起，你错了!")
         console.log(answers);
-        document.querySelector("#answer-text").innerText = answers[0].text
+        answerText.innerText = answers[0].text
     }
     setTimeout(() => createNum(), 3000);
 
 }
-// 获取所有的按钮对象
-let btns = document.querySelectorAll(".btn-box button");
-// 下一题
-btns[0].addEventListener("click", function () {
-    createNum()
-})
-// 确定按钮函数  答题
-btns[1].addEventListener("click", function () {
-    console.log(expression);
-    // 若表达式不完整，不允许答题
-    if (expression.length < 3) return
-    // 将数组拼接成表达式
-    let str = expression.join("")
-    // 调用验证答案的函数，并传入拼接的表达式
-    checkAnswer(str)
-})
-// 无解按钮  无解
-btns[2].addEventListener("click", () => {
-    if (expression.length === 0 && answers.length === 0) {
-        alert("恭喜您，答对了！！！")
-    } else {
-        alert("回答错误！！！1")
-        document.querySelector("#answer-text").innerText = answers[0].text
-        console.log(answers);
-    }
-    setTimeout(() => createNum(), 3000);
-})
-
-
 
 function lisClick(params) {
-    // 获取所有的 li 对象
-    let lis = document.querySelectorAll(".container li");
-    // 获取作答区对象
-    let takeText = document.querySelector("#take-text")
+    // 获取所有的 +、-、*、/ 对象
+    let btnList = document.querySelectorAll(".container button");
     // 各个 li 对象的点击函数
-    for (let i = 0; i < lis.length; i++) {
-        lis[i].onclick = function () {
+    for (let i = 0; i < btnList.length; i++) {
+        btnList[i].onclick = function () {
+            this.disabled = !this.disabled
+            console.log(this.disabled);
             // 若表达式数组完成，可继续添加项进入数组中
             if (expression.length < 3) {
                 expression.push(this.innerText)
@@ -181,6 +189,8 @@ function lisClick(params) {
                 // 若 expression 已完整后，需要清空再重新加入 表达式各项
                 expression = [];
                 expression.push(this.innerText)
+                btnList.forEach(item => item.disabled = false)
+                this.disabled = true
             }
             takeText.innerText = expression.join('')
         }

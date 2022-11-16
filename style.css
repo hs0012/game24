@@ -11,7 +11,7 @@ body {
     margin: 20px 0;
     list-style: none;
 }
-.container li {
+.container button {
     width: 40px;
     height: 40px;
     font-size: 24px;
@@ -20,11 +20,11 @@ body {
     border: 1px solid #fff;
     cursor: pointer;
 }
-.container li:hover {
+.container button:hover {
     color: #ce0505;
     border-color: #ce0505;
 }
-button {
+.btn-box button {
     padding: 0 20px;
     height: 40px;
     border: none;
