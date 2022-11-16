@@ -8,15 +8,21 @@ body {
 }
 .container {
     display: flex;
+    margin: 20px 0;
     list-style: none;
 }
 .container li {
     width: 40px;
     height: 40px;
-    font-size: 18px;
+    font-size: 24px;
     text-align: center;
     line-height: 40px;
     border: 1px solid #fff;
+    cursor: pointer;
+}
+.container li:hover {
+    color: #ce0505;
+    border-color: #ce0505;
 }
 button {
     padding: 0 20px;

@@ -130,13 +130,14 @@ function checkAnswer(str) {
     }
     else {
         alert("对不起，你错了!")
+        console.log(answers);
         document.querySelector("#answer-text").innerText = answers[0].text
     }
     setTimeout(() => createNum(), 3000);
 
 }
 // 获取所有的按钮对象
-let btns = document.querySelectorAll("button");
+let btns = document.querySelectorAll(".btn-box button");
 // 下一题
 btns[0].addEventListener("click", function () {
     createNum()
@@ -153,21 +154,21 @@ btns[1].addEventListener("click", function () {
 })
 // 无解按钮  无解
 btns[2].addEventListener("click", () => {
-    console.log(expression, answers);
     if (expression.length === 0 && answers.length === 0) {
         alert("恭喜您，答对了！！！")
     } else {
         alert("回答错误！！！1")
+        document.querySelector("#answer-text").innerText = answers[0].text
+        console.log(answers);
     }
     setTimeout(() => createNum(), 3000);
-
 })
 
 
 
 function lisClick(params) {
     // 获取所有的 li 对象
-    let lis = document.querySelectorAll("li");
+    let lis = document.querySelectorAll(".container li");
     // 获取作答区对象
     let takeText = document.querySelector("#take-text")
     // 各个 li 对象的点击函数
