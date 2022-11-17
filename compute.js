@@ -4,6 +4,14 @@ let arr = []
 let answers = []
 // 用户算式值
 let expression = []
+// 记录历史记录
+let record = []
+// 答对的数量
+let right = 0
+// 答错的题
+let err = 0
+// 计时
+let time = "00:00:00"
 // 答案展示区 对象
 let answerText = document.querySelector('#answer-text')
 // 用户作答 展示区对象
@@ -146,7 +154,7 @@ function createNum(num = 4) {
         arr.push(num)
     }
     // 将生成的数字集合逐一放入 HTML 中
-    let div = document.querySelector('.container');
+    let div = document.querySelector('.number-box');
     div.innerHTML = arr.map(item => `<button>${item}</button>`).join('')
     let btnList = document.querySelectorAll(".container button");
     btnList.forEach(item=>item.disabled = false)
