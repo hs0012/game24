@@ -143,7 +143,6 @@ function createNum(num = 4) {
     expression = []
     answerText.innerText = "";
     takeText.innerText = ""
-    // btnList.forEach(item=>item.disabled = true)
     // 开始生成随机数
     for (let index = 0; index < num; index++) {
         // 生成一个随机整数
@@ -167,21 +166,25 @@ function checkAnswer(str) {
     // 若此题无解，返回相应的提示
     if (!answers.length) return alert("此题无解！！！")
     // 查询是否有此答案
-    let res = answers.find(item => item.text.includes(str))
+    let strrev = expression.reverse().join("")
+    let res = answers.find(item => item.text.includes(str) || item.text.includes(strrev))
     // 判定最终结果
     if (res) {
         alert("恭喜您，答对了!");
         answerText.innerText = res.text
+        createRecord(true)
     }
     else {
-        alert("对不起，你错了!")
+        alert("对不起，您答错了!")
         console.log(answers);
         answerText.innerText = answers[0].text
+        createRecord(false)
     }
     setTimeout(() => createNum(), 3000);
 
 }
 
+// 数字与符号的点击事件
 function lisClick(params) {
     // 获取所有的 +、-、*、/ 对象
     let btnList = document.querySelectorAll(".container button");
@@ -189,7 +192,6 @@ function lisClick(params) {
     for (let i = 0; i < btnList.length; i++) {
         btnList[i].onclick = function () {
             this.disabled = !this.disabled
-            console.log(this.disabled);
             // 若表达式数组完成，可继续添加项进入数组中
             if (expression.length < 3) {
                 expression.push(this.innerText)
@@ -204,6 +206,14 @@ function lisClick(params) {
         }
     }
 }
-
+// 创建答题记录
+function createRecord(status) {
+    let obj = {id:record.length + 1,arr,status,expression,answers}
+    record.push(obj)
+    status ? right += 1 : err += 1
+    document.querySelector('.count').innerText = record.length
+    document.querySelector('.right').innerText = right
+    document.querySelector('.err').innerText = err
+}
 
 
