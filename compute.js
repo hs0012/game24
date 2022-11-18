@@ -5,13 +5,13 @@ let answers = []
 // 用户算式值
 let expression = []
 // 记录历史记录
-let record = []
+let record = 0
 // 答对的数量
 let right = 0
 // 答错的题
 let err = 0
 // 计时
-let time = "00:00:00"
+// let time = "00:00:00"
 // 答案展示区 对象
 let answerText = document.querySelector('#answer-text')
 // 用户作答 展示区对象
@@ -23,11 +23,14 @@ let btns = document.querySelectorAll(".btn-box button");
 // 不会 按钮功能
 btns[0].addEventListener("click", function () {
     if (answers.length) {
+        createRecord(false)
         answerText.innerText = answers[0].text
         setTimeout(() => createNum(), 5000);
     }
     else {
         alert("此题无解！！！！")
+        record += 1
+        document.querySelector('.count').innerText = record
         createNum()
     }
 })
@@ -45,9 +48,11 @@ btns[1].addEventListener("click", function () {
 btns[2].addEventListener("click", () => {
     if (answers.length === 0 && expression.length < 3) {
         alert("恭喜您，答对了！！！")
+        createRecord(true)
     } else {
         alert("回答错误！！！1")
         answerText.innerText = answers[0].text
+        createRecord(false)
         console.log(answers);
     }
     setTimeout(() => createNum(), 3000);
@@ -208,10 +213,9 @@ function lisClick(params) {
 }
 // 创建答题记录
 function createRecord(status) {
-    let obj = {id:record.length + 1,arr,status,expression,answers}
-    record.push(obj)
+    record += 1
     status ? right += 1 : err += 1
-    document.querySelector('.count').innerText = record.length
+    document.querySelector('.count').innerText = record
     document.querySelector('.right').innerText = right
     document.querySelector('.err').innerText = err
 }
