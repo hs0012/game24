@@ -224,5 +224,3 @@ function createRecord(status) {
     document.querySelector('.right').innerText = right
     document.querySelector('.err').innerText = err
 }
-
-
