@@ -57,6 +57,11 @@ btns[2].addEventListener("click", () => {
     }
     setTimeout(() => createNum(), 3000);
 })
+btns[3].addEventListener("click",()=>{
+    expression = []
+    takeText.innerText = ""
+    document.querySelectorAll(".container button").forEach(item=>item.disabled = false)
+})
 // 游戏初始化
 createNum()
 
